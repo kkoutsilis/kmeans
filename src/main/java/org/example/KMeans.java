@@ -5,11 +5,13 @@ import org.example.distance.Distance;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toSet;
+
 public class KMeans {
     private static final Random random = new Random();
 
     public static Map<Centroid, List<Record>> fit(List<Record> records, int k, Distance distance, int maxIterations) {
-        List<Centroid> centroids = randomCentroid(records, k);
+        List<Centroid> centroids = randomCentroids(records, k);
         Map<Centroid, List<Record>> clusters = new HashMap<>();
         Map<Centroid, List<Record>> lastState = new HashMap<>();
 
@@ -34,17 +36,21 @@ public class KMeans {
         return lastState;
     }
 
-    private static List<Centroid> randomCentroid(List<Record> records, int k) {
+    private static List<Centroid> randomCentroids(List<Record> records, int k) {
         List<Centroid> centroids = new ArrayList<>();
-        final Map<String, Double> maxs = new HashMap<>();
+        Map<String, Double> maxs = new HashMap<>();
         Map<String, Double> mins = new HashMap<>();
+
         for (Record record : records) {
-            record.getFeatures().forEach((key, final value) -> {
+            record.getFeatures().forEach((key, value) -> {
                 maxs.compute(key, (k1, max) -> max == null || value > max ? value : max);
                 mins.compute(key, (k1, min) -> min == null || value < min ? value : min);
             });
         }
-        Set<String> attributes = records.stream().flatMap(e -> e.getFeatures().keySet().stream()).collect(Collectors.toSet());
+
+        Set<String> attributes = records.stream()
+                .flatMap(e -> e.getFeatures().keySet().stream())
+                .collect(toSet());
         for (int i = 0; i < k; i++) {
             Map<String, Double> coordinates = new HashMap<>();
             for (String attribute : attributes) {
@@ -52,8 +58,10 @@ public class KMeans {
                 double min = mins.get(attribute);
                 coordinates.put(attribute, random.nextDouble() * (max - min) + min);
             }
+
             centroids.add(new Centroid(coordinates));
         }
+
         return centroids;
     }
 
