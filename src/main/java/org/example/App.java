@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -17,6 +18,7 @@ import static java.util.stream.Collectors.toSet;
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
+        //TODO implement csv to records function
         ArrayList<List<String>> recordlist = new ArrayList<>();
 //        List<Record> records =  new ArrayList<>();
         try (CSVReader csvReader = new CSVReader(new FileReader("src/main/java/org/example/files/sample.csv"));) {
@@ -40,16 +42,18 @@ public class App {
             }
             records.add(new Record(des.toString(),test));
         }
-//
-        Map<Centroid, List<Record>> clusters = KMeans.fit(records, 7, new EuclideanDistance(), 1000);
+        Map<Centroid, List<Record>> clusters = KMeans.fit(records, 2, new EuclideanDistance(), 10000);
         // Printing the cluster configuration
         clusters.forEach((key, value) -> {
             System.out.println("-------------------------- CLUSTER ----------------------------");
             System.out.println(key);
-            String members = String.join(", ", value.stream().map(Record::getDescription).collect(toSet()));
-            System.out.print(members);
+            value.forEach(record -> System.out.println(record.getFeatures()));
             System.out.println();
+            System.out.println();
+
         });
+
+        //TODO implement function to create clustered file
 
     }
 }
