@@ -33,10 +33,11 @@ public class App {
                 test.put(des.get(j).toString(),Double.parseDouble(strings.get(j)));
 
             }
-            records.add(new Record(des.toString(),test));
+            records.add(new Record(test));
         }
         Map<Centroid, List<Record>> clusters = KMeans.fit(records, 2, new EuclideanDistance(), 10000);
         // Printing the cluster configuration
+
         clusters.forEach((key, value) -> {
             System.out.println("-------------------------- CLUSTER ----------------------------");
             System.out.println(key);
@@ -45,7 +46,7 @@ public class App {
             System.out.println();
 
         });
-
+        System.out.println("Number of clusters: "+ clusters.size());
         //TODO implement function to create clustered file
 
     }
