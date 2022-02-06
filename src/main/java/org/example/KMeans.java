@@ -18,7 +18,7 @@ public class KMeans {
         // iterate for a pre-defined number of times
         for (int i = 0; i < maxIterations; i++) {
             boolean isLastIteration = i == maxIterations - 1;
-            // in each iteration fin the nearest centroid for each record
+            // in each iteration find the nearest centroid for each record
             for (Record record : records) {
                 Centroid centroid = nearestCentroid(record, centroids, distance);
                 assignToCluster(clusters, record, centroid);
@@ -29,7 +29,7 @@ public class KMeans {
             if (shouldTerminate) {
                 break;
             }
-            // at the end of eah iteration relocate centroids
+            // at the end of each iteration relocate centroids
             centroids = relocateCentroids(clusters);
             clusters = new HashMap<>();
         }

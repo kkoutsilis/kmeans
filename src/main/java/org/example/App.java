@@ -8,19 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toSet;
-
-/**
- * Hello world!
- */
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         //TODO implement csv to records function
         ArrayList<List<String>> recordlist = new ArrayList<>();
-//        List<Record> records =  new ArrayList<>();
         try (CSVReader csvReader = new CSVReader(new FileReader("src/main/java/org/example/files/sample.csv"));) {
             String[] values = null;
 
