@@ -12,23 +12,23 @@ public class Dataset {
     private List<Record> records = new ArrayList<>();
 
     public Dataset(String filepath) {
-        ArrayList<List<String>> recordlist = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(filepath));) {
-            String[] values = null;
+        ArrayList<List<String>> rows = new ArrayList<>();
+        try (CSVReader csvReader = new CSVReader(new FileReader(filepath))) {
+            String[] values;
 
             while ((values = csvReader.readNext()) != null) {
-                recordlist.add(Arrays.asList(values));
+                rows.add(Arrays.asList(values));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
 
-        this.header = recordlist.get(0);
-        recordlist.remove(0);
-        for (List<String> strings : recordlist) {
+        this.header = rows.get(0);
+        rows.remove(0);
+        for (List<String> row : rows) {
             Map<String, Double> features = new HashMap<>();
-            for (int j = 0; j < strings.size(); j++) {
-                features.put(this.header.get(j), Double.parseDouble(strings.get(j)));
+            for (int j = 0; j < row.size(); j++) {
+                features.put(this.header.get(j), Double.parseDouble(row.get(j)));
 
             }
             this.records.add(new Record(features));
