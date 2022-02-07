@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.distance.EuclideanDistance;
+import org.example.distance.ManhattanDistance;
 
 import java.util.List;
 import java.util.Map;
