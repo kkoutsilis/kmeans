@@ -5,7 +5,7 @@ import java.util.Map;
 public class ManhattanDistance implements Distance {
     @Override
     public double calculate(Map<String, Double> f1, Map<String, Double> f2) {
-        int sum = 0;
+        double sum = 0;
         for (String key : f1.keySet()) {
             Double v1 = f1.get(key);
             Double v2 = f2.get(key);
