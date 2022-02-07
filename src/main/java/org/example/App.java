@@ -1,42 +1,17 @@
 package org.example;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import org.example.distance.EuclideanDistance;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
-        //TODO implement csv to records function
-        ArrayList<List<String>> recordlist = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader("src/main/java/org/example/files/sample.csv"));) {
-            String[] values = null;
+        Dataset dataset = new Dataset("src/main/java/org/example/files/sample.csv");
 
-            while ((values = csvReader.readNext()) != null) {
-                recordlist.add(Arrays.asList(values));
-            }
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
-
-        List<Record> records = new ArrayList<>();
-        List<String> des = recordlist.get(0);
-        recordlist.remove(0);
-        for (List<String> strings : recordlist) {
-            Map<String,Double> test = new HashMap<>();
-            for (int j = 0; j < strings.size(); j++) {
-                test.put(des.get(j).toString(),Double.parseDouble(strings.get(j)));
-
-            }
-            records.add(new Record(test));
-        }
-        Map<Centroid, List<Record>> clusters = KMeans.fit(records, 2, new EuclideanDistance(), 10000);
-        // Printing the cluster configuration
+        Map<Centroid, List<Record>> clusters = KMeans.fit(dataset.getRecords(), 2, new EuclideanDistance(), 10000);
 
         clusters.forEach((key, value) -> {
             System.out.println("-------------------------- CLUSTER ----------------------------");
@@ -46,7 +21,7 @@ public class App {
             System.out.println();
 
         });
-        System.out.println("Number of clusters: "+ clusters.size());
+        System.out.println("Number of clusters: " + clusters.size());
         //TODO implement function to create clustered file
 
     }
